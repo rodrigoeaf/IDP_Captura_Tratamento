@@ -1,10 +1,10 @@
+import urllib
 import requests
 import pickle
 import os
 import json
 from bs4 import BeautifulSoup as BS
 from collections import defaultdict
-import seaborn as sns
 import matplotlib.pyplot as plt
 
 url = 'https://www.google.com/googlebooks/uspto-patents-grants-text.html'
@@ -60,3 +60,14 @@ save_json(my_dict)
 # imprimindo gráfico de barras com o resultado 
 plt.bar(x_bar, y_bar)
 plt.show()
+
+# opcional: tamanho dos arquivos .zip
+output_size = {}
+for key, value in my_dict.items():
+    for v in value:
+        with urllib.request.urlopen(v) as handler:
+            if key in output_size:
+                output_size[key] += int(handler.getheader('Content-Length'))
+            else:
+                output_size[key] = (int(handler.getheader('Content-Length')))
+print(output_size)
